@@ -10,7 +10,7 @@ namespace Server
         public void DetermineLength(string message)
         {
             Console.WriteLine(message);
-            Clients.All.ReceiveLength($@"<<{message}>> has a length of: {message.Length}");
+            Clients.Caller.ReceiveLength($@"<<{message}>> has a length of: {message.Length}");
         }
     }
 }

@@ -31,7 +31,7 @@
             this.grpInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpInput.Location = new System.Drawing.Point(0, 169);
             this.grpInput.Name = "grpInput";
-            this.grpInput.Size = new System.Drawing.Size(804, 226);
+            this.grpInput.Size = new System.Drawing.Size(469, 102);
             this.grpInput.TabIndex = 2;
             this.grpInput.TabStop = false;
             this.grpInput.Text = "Input";
@@ -42,16 +42,16 @@
             this.txtInput.Location = new System.Drawing.Point(3, 16);
             this.txtInput.Multiline = true;
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(798, 184);
+            this.txtInput.Size = new System.Drawing.Size(463, 60);
             this.txtInput.TabIndex = 1;
             // 
             // btnSend
             // 
             this.btnSend.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.btnSend.Enabled = false;
-            this.btnSend.Location = new System.Drawing.Point(3, 200);
+            this.btnSend.Location = new System.Drawing.Point(3, 76);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(798, 23);
+            this.btnSend.Size = new System.Drawing.Size(463, 23);
             this.btnSend.TabIndex = 2;
             this.btnSend.Text = "Send to server for analysis";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -64,7 +64,7 @@
             this.pnlStatus.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlStatus.Location = new System.Drawing.Point(0, 0);
             this.pnlStatus.Name = "pnlStatus";
-            this.pnlStatus.Size = new System.Drawing.Size(804, 169);
+            this.pnlStatus.Size = new System.Drawing.Size(469, 169);
             this.pnlStatus.TabIndex = 3;
             // 
             // lstStatus
@@ -75,16 +75,16 @@
             this.lstStatus.FormattingEnabled = true;
             this.lstStatus.Location = new System.Drawing.Point(0, 0);
             this.lstStatus.Name = "lstStatus";
-            this.lstStatus.Size = new System.Drawing.Size(804, 169);
+            this.lstStatus.Size = new System.Drawing.Size(469, 169);
             this.lstStatus.TabIndex = 0;
             // 
             // grpOutput
             // 
             this.grpOutput.Controls.Add(this.txtOutput);
             this.grpOutput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.grpOutput.Location = new System.Drawing.Point(0, 395);
+            this.grpOutput.Location = new System.Drawing.Point(0, 271);
             this.grpOutput.Name = "grpOutput";
-            this.grpOutput.Size = new System.Drawing.Size(804, 100);
+            this.grpOutput.Size = new System.Drawing.Size(469, 100);
             this.grpOutput.TabIndex = 0;
             this.grpOutput.TabStop = false;
             this.grpOutput.Text = "Output";
@@ -97,14 +97,14 @@
             this.txtOutput.Location = new System.Drawing.Point(3, 16);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(798, 81);
+            this.txtOutput.Size = new System.Drawing.Size(463, 81);
             this.txtOutput.TabIndex = 0;
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(804, 495);
+            this.ClientSize = new System.Drawing.Size(469, 371);
             this.Controls.Add(this.grpInput);
             this.Controls.Add(this.grpOutput);
             this.Controls.Add(this.pnlStatus);

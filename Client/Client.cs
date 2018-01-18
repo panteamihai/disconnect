@@ -24,7 +24,6 @@ namespace Client
             _hub = hubConnection.CreateHubProxy(Shared.Hub.Name);
 
             var startConnectionDisposable = Observable.FromAsync(() => hubConnection.Start())
-                                                      .Retry(20)
                                                       .ObserveOn(uiScheduler)
                                                       .Subscribe(_ => AttachBehaviors(),
                                                                  ex => Log(ex.Message));
@@ -32,16 +31,21 @@ namespace Client
             var stateChanges = Observable.FromEvent<StateChange>(
                                             h => hubConnection.StateChanged += h,
                                             h => hubConnection.StateChanged -= h)
-                                         .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
-                                         .ObserveOn(uiScheduler)
-                                         .Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}"));
+                                        .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
+                                        .ObserveOn(uiScheduler);
+                                        
 
-            var controlSignalingDisposable = stateChanges.Subscribe(SetControls);
+            var controlSignalingDisposable = stateChanges.Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}")).Subscribe(SetControls);
+            var disconnectionDisposable = stateChanges
+                    .Where(sc => sc.NewState == ConnectionState.Disconnected)
+                    .Sample(TimeSpan.FromSeconds(10))
+                    .Subscribe(_ => hubConnection.Start());
 
             _disposables = new CompositeDisposable
                            {
                                startConnectionDisposable,
-                               controlSignalingDisposable
+                               controlSignalingDisposable,
+                               disconnectionDisposable
                            };
         }
 
