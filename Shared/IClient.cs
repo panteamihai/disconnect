@@ -2,6 +2,6 @@
 {
     public interface IClient
     {
-        void ReceiveLength(string input);
+        void HandleMessageFromServer(string message);
     }
 }

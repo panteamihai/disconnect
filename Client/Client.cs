@@ -68,7 +68,7 @@ namespace Client
 
         private void AttachBehaviors()
         {
-            _hub.On(nameof(Shared.IClient.ReceiveLength),
+            _hub.On(nameof(Shared.IClient.HandleMessageFromServer),
                 x => { txtOutput.BeginInvoke((Action)(() => txtOutput.Text = x)); });
         }
 
@@ -85,7 +85,7 @@ namespace Client
 
         private void btnSendClick(object sender, EventArgs e)
         {
-            _hub.Invoke(nameof(Shared.IHub.DetermineLength), txtInput.Text);
+            _hub.Invoke(nameof(Shared.IHub.HandleMessageFromCaller), txtInput.Text);
         }
     }
 }

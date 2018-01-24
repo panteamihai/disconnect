@@ -2,6 +2,6 @@
 {
     public interface IHub
     {
-        string DetermineLength(string input);
+        void HandleMessageFromCaller(string input);
     }
 }

@@ -5,12 +5,12 @@ using System;
 namespace Server
 {
     [HubName(Shared.Hub.Name)]
-    public class ServiceHub : Hub, IHub
+    public class ServiceHub : Hub, Shared.IHub
     {
-        public void DetermineLength(string message)
+        public void HandleMessageFromCaller(string message)
         {
             Console.WriteLine(message);
-            Clients.Caller.ReceiveLength($@"<<{message}>> has a length of: {message.Length}");
+            Clients.Caller.HandleMessageFromServer($@"<<{message}>> has a length of: {message.Length}");
         }
     }
 }
