@@ -25,28 +25,33 @@ namespace Client
 
             var startConnectionDisposable = Observable.FromAsync(() => hubConnection.Start())
                                                       .ObserveOn(uiScheduler)
-                                                      .Subscribe(_ => AttachBehaviors(),
-                                                                 ex => Log(ex.Message));
+                                                      .Subscribe(_ => { }, ex => Log(ex.Message));
 
-            var stateChanges = Observable.FromEvent<StateChange>(
-                                            h => hubConnection.StateChanged += h,
-                                            h => hubConnection.StateChanged -= h)
-                                        .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
-                                        .ObserveOn(uiScheduler);
-                                        
+            var stateChangesObservable = Observable.FromEvent<StateChange>(
+                                                        h => hubConnection.StateChanged += h,
+                                                        h => hubConnection.StateChanged -= h)
+                                                    .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
+                                                    .ObserveOn(uiScheduler)
+                                                    .Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}"))
+                                                    .Publish();
 
-            var controlSignalingDisposable = stateChanges.Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}")).Subscribe(SetControls);
-            var disconnectionDisposable = stateChanges
-                    .Where(sc => sc.NewState == ConnectionState.Disconnected)
-                    .Sample(TimeSpan.FromSeconds(10))
-                    .Subscribe(_ => hubConnection.Start());
+            var controlSignalingDisposable = stateChangesObservable   
+                                                .Subscribe(SetControls);
+
+            var disconnectionDisposable = stateChangesObservable
+                                            .Where(sc => sc.NewState == ConnectionState.Disconnected)
+                                            .Sample(TimeSpan.FromSeconds(10))
+                                            .Subscribe(_ => hubConnection.Start());
+
+            var hotDisposable = stateChangesObservable.Connect();
 
             _disposables = new CompositeDisposable
-                           {
-                               startConnectionDisposable,
-                               controlSignalingDisposable,
-                               disconnectionDisposable
-                           };
+            {
+                startConnectionDisposable,
+                controlSignalingDisposable,
+                disconnectionDisposable,
+                hotDisposable
+            };
         }
 
 
@@ -75,10 +80,15 @@ namespace Client
         private void SetControls(StateChange sc)
         {
             var enabled = sc.NewState == ConnectionState.Connected;
+            var visible = sc.NewState == ConnectionState.Connected;
 
-            txtInput.Enabled = enabled;
+            AttachBehaviors();
+
+            grpInput.Visible = visible;
+            grpOutput.Visible = visible;
+
             btnSend.Enabled = enabled;
-            grpOutput.Visible = enabled;
+            txtInput.Enabled = enabled;
 
             lstStatus.BackColor = enabled ? Color.MediumSeaGreen : Color.Firebrick;
         }
