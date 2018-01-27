@@ -15,16 +15,23 @@
             this.grpInput = new System.Windows.Forms.GroupBox();
             this.txtInput = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
-            this.pnlStatus = new System.Windows.Forms.Panel();
+            this.pnlConnectionStatus = new System.Windows.Forms.Panel();
             this.lstStatus = new System.Windows.Forms.ListBox();
             this.grpOutput = new System.Windows.Forms.GroupBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tlsStatus = new System.Windows.Forms.ToolStrip();
             this.lblConnected = new System.Windows.Forms.ToolStripLabel();
+            this.grpLogin = new System.Windows.Forms.GroupBox();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.txtPass = new System.Windows.Forms.TextBox();
+            this.txtUser = new System.Windows.Forms.TextBox();
+            this.lblUser = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.grpInput.SuspendLayout();
-            this.pnlStatus.SuspendLayout();
+            this.pnlConnectionStatus.SuspendLayout();
             this.grpOutput.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.tlsStatus.SuspendLayout();
+            this.grpLogin.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpInput
@@ -58,15 +65,15 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSendClick);
             // 
-            // pnlStatus
+            // pnlConnectionStatus
             // 
-            this.pnlStatus.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlStatus.Controls.Add(this.lstStatus);
-            this.pnlStatus.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlStatus.Location = new System.Drawing.Point(0, 0);
-            this.pnlStatus.Name = "pnlStatus";
-            this.pnlStatus.Size = new System.Drawing.Size(469, 133);
-            this.pnlStatus.TabIndex = 3;
+            this.pnlConnectionStatus.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlConnectionStatus.Controls.Add(this.lstStatus);
+            this.pnlConnectionStatus.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlConnectionStatus.Location = new System.Drawing.Point(0, 0);
+            this.pnlConnectionStatus.Name = "pnlConnectionStatus";
+            this.pnlConnectionStatus.Size = new System.Drawing.Size(469, 133);
+            this.pnlConnectionStatus.TabIndex = 3;
             // 
             // lstStatus
             // 
@@ -83,9 +90,9 @@
             // 
             this.grpOutput.Controls.Add(this.txtOutput);
             this.grpOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpOutput.Location = new System.Drawing.Point(0, 133);
+            this.grpOutput.Location = new System.Drawing.Point(0, 206);
             this.grpOutput.Name = "grpOutput";
-            this.grpOutput.Size = new System.Drawing.Size(469, 388);
+            this.grpOutput.Size = new System.Drawing.Size(469, 315);
             this.grpOutput.TabIndex = 0;
             this.grpOutput.TabStop = false;
             this.grpOutput.Text = "Output";
@@ -98,19 +105,19 @@
             this.txtOutput.Location = new System.Drawing.Point(3, 16);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(463, 369);
+            this.txtOutput.Size = new System.Drawing.Size(463, 296);
             this.txtOutput.TabIndex = 0;
             // 
-            // toolStrip1
+            // tlsStatus
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tlsStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tlsStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblConnected});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 596);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(469, 25);
-            this.toolStrip1.TabIndex = 4;
-            this.toolStrip1.Text = "toolStrip1";
+            this.tlsStatus.Location = new System.Drawing.Point(0, 596);
+            this.tlsStatus.Name = "tlsStatus";
+            this.tlsStatus.Size = new System.Drawing.Size(469, 25);
+            this.tlsStatus.TabIndex = 4;
+            this.tlsStatus.Text = "toolStrip1";
             // 
             // lblConnected
             // 
@@ -118,15 +125,76 @@
             this.lblConnected.Size = new System.Drawing.Size(65, 22);
             this.lblConnected.Text = "Connected";
             // 
+            // grpLogin
+            // 
+            this.grpLogin.Controls.Add(this.label2);
+            this.grpLogin.Controls.Add(this.lblUser);
+            this.grpLogin.Controls.Add(this.btnLogin);
+            this.grpLogin.Controls.Add(this.txtPass);
+            this.grpLogin.Controls.Add(this.txtUser);
+            this.grpLogin.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpLogin.Location = new System.Drawing.Point(0, 133);
+            this.grpLogin.Name = "grpLogin";
+            this.grpLogin.Size = new System.Drawing.Size(469, 73);
+            this.grpLogin.TabIndex = 1;
+            this.grpLogin.TabStop = false;
+            this.grpLogin.Text = "Credentials";
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.Location = new System.Drawing.Point(347, 19);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(110, 46);
+            this.btnLogin.TabIndex = 2;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLoginClick);
+            // 
+            // txtPass
+            // 
+            this.txtPass.Location = new System.Drawing.Point(102, 45);
+            this.txtPass.Name = "txtPass";
+            this.txtPass.PasswordChar = '*';
+            this.txtPass.Size = new System.Drawing.Size(239, 20);
+            this.txtPass.TabIndex = 1;
+            // 
+            // txtUser
+            // 
+            this.txtUser.Location = new System.Drawing.Point(102, 19);
+            this.txtUser.Name = "txtUser";
+            this.txtUser.Size = new System.Drawing.Size(239, 20);
+            this.txtUser.TabIndex = 0;
+            // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(52, 22);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(32, 13);
+            this.lblUser.TabIndex = 3;
+            this.lblUser.Text = "User:";
+            this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(28, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Password:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(469, 621);
             this.Controls.Add(this.grpOutput);
+            this.Controls.Add(this.grpLogin);
             this.Controls.Add(this.grpInput);
-            this.Controls.Add(this.pnlStatus);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.pnlConnectionStatus);
+            this.Controls.Add(this.tlsStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -134,11 +202,13 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.grpInput.ResumeLayout(false);
             this.grpInput.PerformLayout();
-            this.pnlStatus.ResumeLayout(false);
+            this.pnlConnectionStatus.ResumeLayout(false);
             this.grpOutput.ResumeLayout(false);
             this.grpOutput.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.tlsStatus.ResumeLayout(false);
+            this.tlsStatus.PerformLayout();
+            this.grpLogin.ResumeLayout(false);
+            this.grpLogin.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,12 +219,18 @@
         private System.Windows.Forms.GroupBox grpInput;
         private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.Panel pnlStatus;
+        private System.Windows.Forms.Panel pnlConnectionStatus;
         private System.Windows.Forms.GroupBox grpOutput;
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.ListBox lstStatus;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip tlsStatus;
         private System.Windows.Forms.ToolStripLabel lblConnected;
+        private System.Windows.Forms.GroupBox grpLogin;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.TextBox txtPass;
+        private System.Windows.Forms.TextBox txtUser;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblUser;
     }
 }
 

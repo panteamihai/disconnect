@@ -97,5 +97,10 @@ namespace Client
         {
             _hub.Invoke(nameof(Shared.IHub.HandleMessageFromCaller), txtInput.Text);
         }
+
+        private void btnLoginClick(object sender, EventArgs e)
+        {
+            _hub.Invoke(nameof(Shared.IHub.HandleLoginFromCaller), txtUser.Text, txtPass.Text);
+        }
     }
 }
