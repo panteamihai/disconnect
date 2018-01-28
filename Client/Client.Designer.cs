@@ -22,11 +22,11 @@
             this.tlsStatus = new System.Windows.Forms.ToolStrip();
             this.lblConnected = new System.Windows.Forms.ToolStripLabel();
             this.grpLogin = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblUser = new System.Windows.Forms.Label();
             this.btnLogin = new System.Windows.Forms.Button();
             this.txtPass = new System.Windows.Forms.TextBox();
             this.txtUser = new System.Windows.Forms.TextBox();
-            this.lblUser = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.grpInput.SuspendLayout();
             this.pnlConnectionStatus.SuspendLayout();
             this.grpOutput.SuspendLayout();
@@ -46,6 +46,7 @@
             this.grpInput.TabIndex = 2;
             this.grpInput.TabStop = false;
             this.grpInput.Text = "Input";
+            this.grpInput.Visible = false;
             // 
             // txtInput
             // 
@@ -122,8 +123,8 @@
             // lblConnected
             // 
             this.lblConnected.Name = "lblConnected";
-            this.lblConnected.Size = new System.Drawing.Size(65, 22);
-            this.lblConnected.Text = "Connected";
+            this.lblConnected.Size = new System.Drawing.Size(79, 22);
+            this.lblConnected.Text = "Disconnected";
             // 
             // grpLogin
             // 
@@ -139,6 +140,27 @@
             this.grpLogin.TabIndex = 1;
             this.grpLogin.TabStop = false;
             this.grpLogin.Text = "Credentials";
+            this.grpLogin.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(28, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Password:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblUser
+            // 
+            this.lblUser.AutoSize = true;
+            this.lblUser.Location = new System.Drawing.Point(52, 22);
+            this.lblUser.Name = "lblUser";
+            this.lblUser.Size = new System.Drawing.Size(32, 13);
+            this.lblUser.TabIndex = 3;
+            this.lblUser.Text = "User:";
+            this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnLogin
             // 
@@ -164,26 +186,6 @@
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(239, 20);
             this.txtUser.TabIndex = 0;
-            // 
-            // lblUser
-            // 
-            this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(52, 22);
-            this.lblUser.Name = "lblUser";
-            this.lblUser.Size = new System.Drawing.Size(32, 13);
-            this.lblUser.TabIndex = 3;
-            this.lblUser.Text = "User:";
-            this.lblUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Password:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Client
             // 

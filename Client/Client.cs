@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNet.SignalR.Client;
 using System;
 using System.Drawing;
+using System.Net;
+using System.Net.Cache;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Web.Security;
 using System.Windows.Forms;
+using RestSharp;
 
 namespace Client
 {
@@ -35,8 +39,12 @@ namespace Client
                                                     .Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}"))
                                                     .Publish();
 
-            var controlSignalingDisposable = stateChangesObservable   
-                                                .Subscribe(SetControls);
+            var controlSignalingDisposable = stateChangesObservable
+                                                .Subscribe(sc =>
+                                                {
+                                                    AttachBehaviors();
+                                                    SetControls(sc);
+                                                });
 
             var disconnectionDisposable = stateChangesObservable
                                             .Where(sc => sc.NewState == ConnectionState.Disconnected)
@@ -82,10 +90,9 @@ namespace Client
             var enabled = sc.NewState == ConnectionState.Connected;
             var visible = sc.NewState == ConnectionState.Connected;
 
-            AttachBehaviors();
-
-            grpInput.Visible = visible;
-            grpOutput.Visible = visible;
+            grpLogin.Visible = visible;
+           // grpInput.Visible = visible;
+          //  grpOutput.Visible = visible;
 
             btnSend.Enabled = enabled;
             txtInput.Enabled = enabled;
@@ -100,7 +107,21 @@ namespace Client
 
         private void btnLoginClick(object sender, EventArgs e)
         {
-            _hub.Invoke(nameof(Shared.IHub.HandleLoginFromCaller), txtUser.Text, txtPass.Text);
+            //_hub.Invoke(nameof(Shared.IHub.HandleLoginFromCaller), txtUser.Text, txtPass.Text);
+
+
+            AuthenticateUser(txtUser.Text, txtPass.Text);
+        }
+
+        private static bool AuthenticateUser(string user, string password)
+        {
+            var client = new RestClient($"{Shared.Hub.Url}/token");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            request.AddHeader("content-type", "application/x-www-form-urlencoded");
+            request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=abc&client_secret=123", ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return true;
         }
     }
 }
