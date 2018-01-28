@@ -91,8 +91,8 @@ namespace Client
             var visible = sc.NewState == ConnectionState.Connected;
 
             grpLogin.Visible = visible;
-           // grpInput.Visible = visible;
-          //  grpOutput.Visible = visible;
+            grpInput.Visible = visible;
+            grpOutput.Visible = visible;
 
             btnSend.Enabled = enabled;
             txtInput.Enabled = enabled;
@@ -119,9 +119,9 @@ namespace Client
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddParameter("application/x-www-form-urlencoded", "grant_type=client_credentials&client_id=abc&client_secret=123", ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
-            return true;
+            request.AddParameter("application/x-www-form-urlencoded",$"grant_type=password&username={user}&password={password}", ParameterType.RequestBody);
+
+            return client.Execute(request).StatusCode == HttpStatusCode.Accepted;
         }
     }
 }

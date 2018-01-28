@@ -9,7 +9,9 @@ namespace Server
     {
         public void HandleMessageFromCaller(string message)
         {
-            Console.WriteLine(message);
+            var identity = Context.User?.Identity;
+
+            Console.WriteLine($"From {identity?.Name} (auth: {identity?.IsAuthenticated}): {message}");
             Clients.Caller.HandleMessageFromServer($"<<{message}>> has a length of: {message.Length}");
         }
 
