@@ -251,6 +251,7 @@
     <Compile Include="Authentication\ApplicationOAuthBearerAuthenticationProvider.cs" />
     <Compile Include="Authentication\AuthContext.cs" />
     <Compile Include="Authentication\AuthRepository.cs" />
+    <Compile Include="Authentication\QueryStringOAuthBearerProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authentication\SimpleAuthorizationServerProvider.cs" />

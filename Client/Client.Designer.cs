@@ -140,7 +140,6 @@
             this.grpLogin.TabIndex = 1;
             this.grpLogin.TabStop = false;
             this.grpLogin.Text = "Credentials";
-            this.grpLogin.Visible = false;
             // 
             // label2
             // 

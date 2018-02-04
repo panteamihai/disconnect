@@ -9,57 +9,24 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Web.Security;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace Client
 {
     public partial class Client : Form
     {
-        private readonly IHubProxy _hub;
-        private readonly CompositeDisposable _disposables;
+        private  IHubProxy _hub;
+        private CompositeDisposable _disposables;
+        private HubConnection _hubConnection;
+        private static string _bearerToken;
+        private readonly SynchronizationContextScheduler _uiScheduler;
 
         public Client()
         {
             InitializeComponent();
 
-            var uiScheduler = new SynchronizationContextScheduler(SynchronizationContext.Current);
-
-            var hubConnection = new HubConnection(Shared.Hub.Url);
-            _hub = hubConnection.CreateHubProxy(Shared.Hub.Name);
-
-            var startConnectionDisposable = Observable.FromAsync(() => hubConnection.Start())
-                                                      .ObserveOn(uiScheduler)
-                                                      .Subscribe(_ => { }, ex => Log(ex.Message));
-
-            var stateChangesObservable = Observable.FromEvent<StateChange>(
-                                                        h => hubConnection.StateChanged += h,
-                                                        h => hubConnection.StateChanged -= h)
-                                                    .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
-                                                    .ObserveOn(uiScheduler)
-                                                    .Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}"))
-                                                    .Publish();
-
-            var controlSignalingDisposable = stateChangesObservable
-                                                .Subscribe(sc =>
-                                                {
-                                                    AttachBehaviors();
-                                                    SetControls(sc);
-                                                });
-
-            var disconnectionDisposable = stateChangesObservable
-                                            .Where(sc => sc.NewState == ConnectionState.Disconnected)
-                                            .Sample(TimeSpan.FromSeconds(10))
-                                            .Subscribe(_ => hubConnection.Start());
-
-            var hotDisposable = stateChangesObservable.Connect();
-
-            _disposables = new CompositeDisposable
-            {
-                startConnectionDisposable,
-                controlSignalingDisposable,
-                disconnectionDisposable,
-                hotDisposable
-            };
+          _uiScheduler = new SynchronizationContextScheduler(SynchronizationContext.Current);
         }
 
 
@@ -90,7 +57,7 @@ namespace Client
             var enabled = sc.NewState == ConnectionState.Connected;
             var visible = sc.NewState == ConnectionState.Connected;
 
-            grpLogin.Visible = visible;
+           // grpLogin.Visible = visible;
             grpInput.Visible = visible;
             grpOutput.Visible = visible;
 
@@ -110,7 +77,46 @@ namespace Client
             //_hub.Invoke(nameof(Shared.IHub.HandleLoginFromCaller), txtUser.Text, txtPass.Text);
 
 
-            AuthenticateUser(txtUser.Text, txtPass.Text);
+            if (AuthenticateUser(txtUser.Text, txtPass.Text))
+            {
+                _hubConnection = new HubConnection(Shared.Hub.Url, $"{{ access_token: {_bearerToken} }}");
+                _hub = _hubConnection.CreateHubProxy(Shared.Hub.Name);
+
+
+                var startConnectionDisposable = Observable.FromAsync(() => _hubConnection.Start())
+                                                          .ObserveOn(_uiScheduler)
+                                                          .Subscribe(_ => { }, ex => Log(ex.Message));
+
+                var stateChangesObservable = Observable.FromEvent<StateChange>(
+                        h => _hubConnection.StateChanged += h,
+                        h => _hubConnection.StateChanged -= h)
+                    .StartWith(new StateChange(ConnectionState.Disconnected, ConnectionState.Connecting))
+                    .ObserveOn(_uiScheduler)
+                    .Do(sc => Log($"Went from {sc.OldState} to {sc.NewState}"))
+                    .Publish();
+
+                var controlSignalingDisposable = stateChangesObservable
+                    .Subscribe(sc =>
+                    {
+                        AttachBehaviors();
+                        SetControls(sc);
+                    });
+
+                var disconnectionDisposable = stateChangesObservable
+                    .Where(sc => sc.NewState == ConnectionState.Disconnected)
+                    .Sample(TimeSpan.FromSeconds(10))
+                    .Subscribe(_ => _hubConnection.Start());
+
+                var hotDisposable = stateChangesObservable.Connect();
+
+                _disposables = new CompositeDisposable
+                {
+                    startConnectionDisposable,
+                    controlSignalingDisposable,
+                    disconnectionDisposable,
+                    hotDisposable
+                };
+            }
         }
 
         private static bool AuthenticateUser(string user, string password)
@@ -121,7 +127,13 @@ namespace Client
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("application/x-www-form-urlencoded",$"grant_type=password&username={user}&password={password}", ParameterType.RequestBody);
 
-            return client.Execute(request).StatusCode == HttpStatusCode.Accepted;
+            var restResponse = client.Execute(request);
+            var success = restResponse.StatusCode == HttpStatusCode.OK;
+
+            if(success)
+                _bearerToken = JObject.Parse(restResponse.Content).GetValue("access_token").Value<string>();
+
+            return success;
         }
     }
 }

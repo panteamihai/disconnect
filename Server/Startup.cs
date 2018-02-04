@@ -4,6 +4,7 @@ using Owin;
 using System;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Server.Authentication;
 
 namespace Server
 {
@@ -14,7 +15,7 @@ namespace Server
             GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(6);
 
             // Token Generation
-            app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions()
+            app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
@@ -25,7 +26,7 @@ namespace Server
             // Token Consumption
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
             {
-                Provider = new ApplicationOAuthBearerAuthenticationProvider()
+                Provider = new QueryStringOAuthBearerProvider()
             });
 
             app.UseCors(CorsOptions.AllowAll);
