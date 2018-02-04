@@ -4,7 +4,6 @@ using Owin;
 using System;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
-using Server.Authentication;
 
 namespace Server
 {
@@ -18,16 +17,13 @@ namespace Server
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/token"),
+                TokenEndpointPath = new PathString("/Token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider()
             });
 
             // Token Consumption
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
-            {
-                Provider = new QueryStringOAuthBearerProvider()
-            });
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
 
             app.UseCors(CorsOptions.AllowAll);
             app.MapSignalR();

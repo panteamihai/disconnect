@@ -20,5 +20,11 @@ namespace Server
             Console.WriteLine($"Logging in user {username}");
             Clients.Caller.HandleMessageFromServer("Logged in");
         }
+
+        [Authorize]
+        public string AuthorizedString()
+        {
+            return "You are successfully Authorized";
+        }
     }
 }

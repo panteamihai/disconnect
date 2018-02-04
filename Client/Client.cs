@@ -70,6 +70,8 @@ namespace Client
         private void btnSendClick(object sender, EventArgs e)
         {
             _hub.Invoke(nameof(Shared.IHub.HandleMessageFromCaller), txtInput.Text);
+            _hub.Invoke<string>("AuthorizedString");
+
         }
 
         private void btnLoginClick(object sender, EventArgs e)
@@ -79,7 +81,8 @@ namespace Client
 
             if (AuthenticateUser(txtUser.Text, txtPass.Text))
             {
-                _hubConnection = new HubConnection(Shared.Hub.Url, $"{{ access_token: {_bearerToken} }}");
+                _hubConnection = new HubConnection(Shared.Hub.Url);
+                _hubConnection.Headers.Add("Authorization", $"Bearer {_bearerToken}");
                 _hub = _hubConnection.CreateHubProxy(Shared.Hub.Name);
 
 
